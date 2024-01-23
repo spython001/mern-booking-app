@@ -1,7 +1,10 @@
+import Navbar from '../../components/navbar/Navbar'
 import './home.scss'
 
 export default function Home() {
   return (
-    <div>Home</div>
+    <div className='home'>
+      <Navbar/>
+    </div>
   )
 }

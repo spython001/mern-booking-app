@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Home from './pages/home/Home';
 import List from './pages/list/List';
+import Hotel from './pages/hotel/Hotel';
 
 function App() {
 
@@ -16,11 +17,13 @@ function App() {
           <Home/>
         </Route>
 
-        <Route path='/hotels'>
+        <Route exact path='/hotels'>
           <List/>
         </Route>
 
-        
+        <Route path='/hotels/:id'>
+          <Hotel/>
+        </Route>
       </Switch>
     </Router>
   )
