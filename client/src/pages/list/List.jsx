@@ -5,6 +5,7 @@ import './list.scss'
 import {format} from 'date-fns'
 import { useState } from 'react'
 import { DateRange } from 'react-date-range'
+import SearchItem from '../../components/searchItem/SearchItem'
 
 export default function List() {
   const location = useLocation()
@@ -79,11 +80,21 @@ export default function List() {
                   </div>
                 </div>
               </div>
-              
+
             </div>
+            <button>Search</button>
           </div>
           
-          <div className="listResult"></div>
+          <div className="listResult">
+            <SearchItem/>
+            <SearchItem/>
+            <SearchItem/>
+            <SearchItem/>
+            <SearchItem/>
+            <SearchItem/>
+            <SearchItem/>
+            <SearchItem/>
+          </div>
         </div>
       </div>
     </div>
