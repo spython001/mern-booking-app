@@ -31,7 +31,13 @@ const connect = async () => {
     .catch((err) => {console.error(err);});
 */
 
+
+
 //MIDDLEWARES
+app.use(express.json());
+
+
+//routes in middlewares
 app.use('/api/auth', authRoute);
 app.use('/api/users', usersRoute);
 app.use('/api/hotels', hotelsRoute)
