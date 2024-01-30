@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Hotel = require("../models/Hotel");
+const createError  = require("../utils/error");
 
 
 //CREATE HOTEL
@@ -12,8 +13,6 @@ router.post("/", async(req, res) =>{
         res.status(500).json();
     }
 });
-
-module.exports = router;
 
 //UPDATE HOTEL
 router.put("/:id", async(req, res) =>{
@@ -50,12 +49,15 @@ router.get("/:id", async(req, res) =>{
 });
 
 //GET ALL HOTELS
-router.get("/", async(req, res) =>{
+router.get("/", async(req, res, next) =>{
+
     try {
         const hotels = await Hotel.find();
         res.status(200).json(hotels);
     } catch (err) {
-        res.status(500).json();
+        next(err);
     }
 });
+
+module.exports = router;
 
