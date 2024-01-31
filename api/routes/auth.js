@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const router = require("express").Router();
 const createError = require("../utils/error");
+const jwt = require("jsonwebtoken");
 
 
 
@@ -27,7 +28,7 @@ router.post("/register", async(req,res,next) =>{
 //LOGIN
 router.post("/login", async(req,res,next) =>{
     try{
-        //user validation
+    //user validation
     const user = await User.findOne({ username: req.body.username });
     if(!user) return next(createError(404, "User not found"));
 
@@ -35,13 +36,15 @@ router.post("/login", async(req,res,next) =>{
     const isPasswordCorrect = await bcrypt.compare(req.body.password, user.password);
     if(!isPasswordCorrect) return next(createError(400, "Wrong password or username"));
 
+    const token = jwt.sign({id:user._id, isAdmin:user.isAdmin}, process.env.JWT_PAS);
+
     const {password, isAdmin, ...otherDetails} = user._doc;
-    res.status(200).json({...otherDetails});
+    res.cookie("access_token", token, {httpOnly:true}).status(200).json({...otherDetails});
     }catch(err){
         next(err);
     }
     
-})
+});
 
 
 

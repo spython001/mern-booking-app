@@ -6,6 +6,7 @@ const authRoute = require("./routes/auth");
 const usersRoute = require("./routes/users");
 const hotelsRoute = require("./routes/hotels");
 const roomsRoute = require("./routes/rooms");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 app.use(cors());
@@ -40,6 +41,7 @@ mongoose.connection.on("disconnected", () => {
 
 //MIDDLEWARES
 app.use(express.json());
+app.use(cookieParser());
 
 
 //routes middlewares
