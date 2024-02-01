@@ -17,7 +17,7 @@ router.get("/checkuser/:id", verifyUser, (req,res,next) => {
 
 //admin
 router.get("/checkadmin/:id", verifyIsAdmin, (req,res,next) => {
-    res.send("hello admin, you are logged in and can delete your account")
+    res.send("hello admin, you are logged in and can delete all accounts")
 })
 
 
