@@ -1,10 +1,12 @@
 const router = require("express").Router();
 const Hotel = require("../models/Hotel");
 const createError  = require("../utils/error");
+const { verifyToken, verifyUser, verifyIsAdmin } = require("../utils/verifyToken");
+
 
 
 //CREATE HOTEL
-router.post("/", async(req, res, next) =>{
+router.post("/", verifyIsAdmin, async(req, res, next) =>{
     const newHotel = new Hotel(req.body);
     try {
         const savedHotel = await newHotel.save();
@@ -15,7 +17,7 @@ router.post("/", async(req, res, next) =>{
 });
 
 //UPDATE HOTEL
-router.put("/:id", async(req, res, next) =>{
+router.put("/:id", verifyIsAdmin, async(req, res, next) =>{
     try {
         const updatedHotel = await Hotel.findByIdAndUpdate(
             req.params.id, 
@@ -29,7 +31,7 @@ router.put("/:id", async(req, res, next) =>{
 });
 
 //DELETE HOTEL
-router.delete("/:id", async(req, res) =>{
+router.delete("/:id", verifyIsAdmin, async(req, res) =>{
     try {
         const deletedHotel = await Hotel.findByIdAndDelete(req.params.id);
         res.status(200).json('Hotel has been deleted');

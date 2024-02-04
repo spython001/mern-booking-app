@@ -5,7 +5,7 @@ const { verifyToken, verifyUser, verifyIsAdmin } = require("../utils/verifyToken
 
 
 
-//token
+/*//token
 router.get("/checkauthentication", verifyToken, (req,res,next)=>{
     res.send("hello user, you are logged in")
 });
@@ -18,11 +18,11 @@ router.get("/checkuser/:id", verifyUser, (req,res,next) => {
 //admin
 router.get("/checkadmin/:id", verifyIsAdmin, (req,res,next) => {
     res.send("hello admin, you are logged in and can delete all accounts")
-})
+})*/
 
 
 //UPDATE USER
-router.put("/:id", async(req,res,next) =>{
+router.put("/:id", verifyUser, async(req,res,next) =>{
 
     try{
         const updatedUser = await User.findByIdAndUpdate(
@@ -38,7 +38,7 @@ router.put("/:id", async(req,res,next) =>{
 });
 
 //DELETE USER
-router.delete("/:id", async(req,res,next) => {
+router.delete("/:id", verifyUser, async(req,res,next) => {
     try{
         await User.findByIdAndDelete(req.params.id);
 
@@ -49,7 +49,7 @@ router.delete("/:id", async(req,res,next) => {
 });
 
 //GET 'A' USER
-router.get("/:id", async(req, res) =>{
+router.get("/:id", verifyUser, async(req, res) =>{
     try {
         const user = await User.findById(req.params.id);
         res.status(200).json(user);
@@ -59,7 +59,7 @@ router.get("/:id", async(req, res) =>{
 });
 
 //GET ALL userS
-router.get("/", async(req, res, next) =>{
+router.get("/", verifyIsAdmin, async(req, res, next) =>{
 
     try {
         const users = await User.find();
