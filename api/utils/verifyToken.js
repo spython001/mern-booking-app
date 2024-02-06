@@ -16,7 +16,7 @@ const verifyToken = (req,res,next) => {
 
 //user verification
 const verifyUser = (req,res,next) => {
-    verifyToken(req,res, ()=>{
+    verifyToken(req,res,next, ()=>{
 
         if(req.user.id === req.params.id || req.user.isAdmin){
             next();
@@ -28,7 +28,7 @@ const verifyUser = (req,res,next) => {
 
 //isAdmin verification
 const verifyIsAdmin = (req,res,next) => {
-    verifyToken(req,res, ()=>{
+    verifyToken(req,res,next, ()=>{
 
         if(req.user.isAdmin){
             next();
