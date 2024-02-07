@@ -22,21 +22,25 @@ router.get("/checkadmin/:id", verifyIsAdmin, (req,res,next) => {
 
 
 //UPDATE USER
-router.put("/:id", verifyUser, async(req,res,next) =>{
+router.put("/:id", verifyUser, async (req, res)=>{
+    if(req.user.id === req.params.id || req.user.isAdmin){
+        if(req.body.password){
+            const salt = await bcrypt.genSalt(10);
+            req.body.password = await bcrypt.hash(req.body.password, salt);
+        }
+        try {
+            const updatedUser = await User.findByIdAndUpdate(req.params.id, {
+                $set: req.body
+            }, { new: true });
 
-    try{
-        const updatedUser = await User.findByIdAndUpdate(
-            req.params.id,
-            {$set:req.body},
-            {new:true}
-        )
-
-        res.status(200).json(updatedUser)
-    }catch(err){
-        next(err);
+            res.status(200).json(updatedUser);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    }else { 
+        res.status(403).json("You can only update your account");
     }
 });
-
 //DELETE USER
 router.delete("/:id", verifyUser, async(req,res,next) => {
     try{
