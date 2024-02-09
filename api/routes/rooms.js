@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Room = require("../models/Room");
+const Hotel = require("../models/Hotel");
 const createError  = require("../utils/error");
 const { verifyToken, verifyUser, verifyIsAdmin } = require("../utils/verifyToken");
 
@@ -11,7 +12,7 @@ router.post("/", verifyIsAdmin, async(req, res, next) =>{
     try {
         const savedRoom = await newRoom.save();
         try {
-            await Room.findByIdAndUpdate(hotelId, {
+            await Hotel.findByIdAndUpdate(hotelId, {
                 $push: {rooms: savedRoom._id },
             });
         } catch (err) {
@@ -26,12 +27,12 @@ router.post("/", verifyIsAdmin, async(req, res, next) =>{
 //UPDATE ROOM
 router.put("/:id", verifyIsAdmin, async(req, res, next) =>{
     try {
-        const updatedroom = await Room.findByIdAndUpdate(
+        const updatedRoom = await Room.findByIdAndUpdate(
             req.params.id, 
             {$set: req.body},
             {new: true}
             );
-        res.status(200).json(updatedroom);
+        res.status(200).json(updatedRoom);
     } catch (err) {
         next(err);
     }
@@ -40,7 +41,7 @@ router.put("/:id", verifyIsAdmin, async(req, res, next) =>{
 //DELETE ROOM
 router.delete("/:id", verifyIsAdmin, async(req, res) =>{
     try {
-        const deletedroom = await Room.findByIdAndDelete(req.params.id);
+        await Room.findByIdAndDelete(req.params.id);
         res.status(200).json('room has been deleted');
     } catch (err) {
         next(err);
